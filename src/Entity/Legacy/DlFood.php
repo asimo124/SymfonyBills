@@ -2,6 +2,8 @@
 
 namespace App\Entity\Legacy;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -16,8 +18,9 @@ class DlFood
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    #[ORM\Column(type: 'integer', name: 'macro_type_id')]
-    private int $macroTypeId;
+    #[ORM\ManyToOne(targetEntity: DlMacroType::class, inversedBy: 'foods')]
+    #[ORM\JoinColumn(name: 'macro_type_id', referencedColumnName: 'id', nullable: false)]
+    private ?DlMacroType $macroType = null;
 
     #[ORM\Column(type: 'integer', nullable: true, name: 'type_id')]
     private ?int $typeId = null;
@@ -40,11 +43,21 @@ class DlFood
     #[ORM\Column(type: 'boolean', name: 'is_cruciferous')]
     private bool $isCruciferous;
 
-    #[ORM\Column(type: 'integer', name: 'unit_of_measure_id')]
-    private int $unitOfMeasureId;
+    #[ORM\ManyToOne(targetEntity: DlUnitOfMeasure::class, inversedBy: 'foods')]
+    #[ORM\JoinColumn(name: 'unit_of_measure_id', referencedColumnName: 'id', nullable: false)]
+    private ?DlUnitOfMeasure $unitOfMeasure = null;
 
     #[ORM\Column(type: 'decimal', nullable: true, name: 'default_amount')]
     private ?string $defaultAmount = null;
+
+    /** @var Collection<int, DlFoodLog> */
+    #[ORM\OneToMany(targetEntity: DlFoodLog::class, mappedBy: 'food')]
+    private Collection $foodLogs;
+
+    public function __construct()
+    {
+        $this->foodLogs = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -70,14 +83,14 @@ class DlFood
         return $this;
     }
 
-    public function getMacroTypeId(): int
+    public function getMacroType(): ?DlMacroType
     {
-        return $this->macroTypeId;
+        return $this->macroType;
     }
 
-    public function setMacroTypeId(int $macroTypeId): self
+    public function setMacroType(?DlMacroType $macroType): self
     {
-        $this->macroTypeId = $macroTypeId;
+        $this->macroType = $macroType;
 
         return $this;
     }
@@ -166,14 +179,14 @@ class DlFood
         return $this;
     }
 
-    public function getUnitOfMeasureId(): int
+    public function getUnitOfMeasure(): ?DlUnitOfMeasure
     {
-        return $this->unitOfMeasureId;
+        return $this->unitOfMeasure;
     }
 
-    public function setUnitOfMeasureId(int $unitOfMeasureId): self
+    public function setUnitOfMeasure(?DlUnitOfMeasure $unitOfMeasure): self
     {
-        $this->unitOfMeasureId = $unitOfMeasureId;
+        $this->unitOfMeasure = $unitOfMeasure;
 
         return $this;
     }
@@ -190,4 +203,11 @@ class DlFood
         return $this;
     }
 
+    /**
+     * @return Collection<int, DlFoodLog>
+     */
+    public function getFoodLogs(): Collection
+    {
+        return $this->foodLogs;
+    }
 }
