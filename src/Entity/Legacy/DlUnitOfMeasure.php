@@ -18,15 +18,6 @@ class DlUnitOfMeasure
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    /** @var Collection<int, DlFood> */
-    #[ORM\OneToMany(targetEntity: DlFood::class, mappedBy: 'unitOfMeasure')]
-    private Collection $foods;
-
-    public function __construct()
-    {
-        $this->foods = new ArrayCollection();
-    }
-
     public function getId(): int
     {
         return $this->id;
@@ -49,14 +40,6 @@ class DlUnitOfMeasure
         $this->title = $title;
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, DlFood>
-     */
-    public function getFoods(): Collection
-    {
-        return $this->foods;
     }
 }
 

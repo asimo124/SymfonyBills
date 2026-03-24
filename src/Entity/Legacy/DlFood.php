@@ -25,9 +25,6 @@ class DlFood
     #[ORM\Column(type: 'integer', nullable: true, name: 'type_id')]
     private ?int $typeId = null;
 
-    #[ORM\Column(type: 'integer', nullable: true, name: 'sub_type_id')]
-    private ?int $subTypeId = null;
-
     #[ORM\Column(type: 'boolean', name: 'has_fiber')]
     private bool $hasFiber;
 
@@ -43,16 +40,20 @@ class DlFood
     #[ORM\Column(type: 'boolean', name: 'is_cruciferous')]
     private bool $isCruciferous;
 
+    private int $macroTypeId;
+
+    private int $unitOfMeasureId;
+
     #[ORM\ManyToOne(targetEntity: DlUnitOfMeasure::class, inversedBy: 'foods')]
     #[ORM\JoinColumn(name: 'unit_of_measure_id', referencedColumnName: 'id', nullable: false)]
     private ?DlUnitOfMeasure $unitOfMeasure = null;
 
+    #[ORM\ManyToOne(targetEntity: DlType::class, inversedBy: 'foods')]
+    #[ORM\JoinColumn(name: 'type_id', referencedColumnName: 'id', nullable: false)]
+    private ?DlType $type = null;
+
     #[ORM\Column(type: 'decimal', nullable: true, name: 'default_amount')]
     private ?string $defaultAmount = null;
-
-    /** @var Collection<int, DlFoodLog> */
-    #[ORM\OneToMany(targetEntity: DlFoodLog::class, mappedBy: 'food')]
-    private Collection $foodLogs;
 
     public function __construct()
     {
@@ -103,18 +104,6 @@ class DlFood
     public function setTypeId(?int $typeId): self
     {
         $this->typeId = $typeId;
-
-        return $this;
-    }
-
-    public function getSubTypeId(): ?int
-    {
-        return $this->subTypeId;
-    }
-
-    public function setSubTypeId(?int $subTypeId): self
-    {
-        $this->subTypeId = $subTypeId;
 
         return $this;
     }
@@ -179,6 +168,36 @@ class DlFood
         return $this;
     }
 
+    public function getType(): ?DlType
+    {
+        return $this->type;
+    }
+
+    public function setType(?DlType $type): self
+    {
+        $this->type = $type;
+    }
+
+    public function getMacroTypeId(): int
+    {
+        return $this->macroTypeId;
+    }
+
+    public function setMacroTypeId(int $macroTypeId): self
+    {
+        $this->macroTypeId = $macroTypeId;
+    }
+
+    public function getUnitOfMeasureId(): int
+    {
+        return $this->unitOfMeasureId;
+    }
+
+    public function setUnitOfMeasureId(int $unitOfMeasureId): self
+    {
+        $this->unitOfMeasureId = $unitOfMeasureId;
+    }
+
     public function getUnitOfMeasure(): ?DlUnitOfMeasure
     {
         return $this->unitOfMeasure;
@@ -201,13 +220,5 @@ class DlFood
         $this->defaultAmount = $defaultAmount;
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, DlFoodLog>
-     */
-    public function getFoodLogs(): Collection
-    {
-        return $this->foodLogs;
     }
 }

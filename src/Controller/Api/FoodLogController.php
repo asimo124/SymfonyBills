@@ -25,11 +25,9 @@ class FoodLogController extends AbstractController
             return $response;
         }
 
-        $rows = $this->foodLogService->getLogEntries();
-        $response = $this->json($rows);
-        $this->applyCors($response);
+        $rows = $this->foodLogService->createFoodLogDqlQuery()->getResult();
 
-        return $response;
+        return $this->json($rows);
     }
 
     private function applyCors(JsonResponse $response): void

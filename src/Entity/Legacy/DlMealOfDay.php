@@ -18,15 +18,6 @@ class DlMealOfDay
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    /** @var Collection<int, DlFoodLog> */
-    #[ORM\OneToMany(targetEntity: DlFoodLog::class, mappedBy: 'mealOfDay')]
-    private Collection $foodLogs;
-
-    public function __construct()
-    {
-        $this->foodLogs = new ArrayCollection();
-    }
-
     public function getId(): int
     {
         return $this->id;
@@ -49,14 +40,6 @@ class DlMealOfDay
         $this->title = $title;
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, DlFoodLog>
-     */
-    public function getFoodLogs(): Collection
-    {
-        return $this->foodLogs;
     }
 }
 

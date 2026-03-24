@@ -27,16 +27,16 @@ class FoodLogService
      */
     public function createFoodLogDqlQuery(): Query
     {
-        return $this->entityManager->createQuery(
+        $query = $this->entityManager->createQuery(
             <<<'DQL'
             SELECT fl
             FROM App\Entity\Legacy\DlFoodLog fl
-            JOIN fl.food f
-            JOIN f.macroType mt
-            JOIN f.unitOfMeasure uom
+            
             ORDER BY DATE_FORMAT(fl.dateConsumed, '%Y-%m-%d') DESC
             DQL
         );
+
+        return $query;
     }
 
     /**
