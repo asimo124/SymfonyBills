@@ -49,8 +49,15 @@ class FoodLogController extends AbstractController
         return [
             'id' => $log->getId(),
             'amount' => $log->getAmount(),
+            'unit_of_measure' => $log->getFood()?->getUnitOfMeasure()?->getTitle(),
+            'percent_fiber' => $log->getFood()?->getPercentFiber(),
             'amount_title' => $log->getAmountTitle(),
             'date_consumed' => $log->getDateConsumed()->format('Y-m-d\TH:i:sP'),
+            'amount_grams' => $log->getAmountGrams(),
+            'fiber_amount' => $log->getFiberAmount(),
+            'soluble_fiber_amount' => $log->getSolubleFiberAmount(),
+            'fiber_amount_grams' => $log->getFiberAmountGrams(),
+            'soluble_fiber_amount_grams' => $log->getSolubleFiberAmountGrams(),
             'food' => $this->serializeFood($log->getFood()),
             'meal_of_day' => $this->serializeMealOfDay($log->getMealOfDay()),
         ];

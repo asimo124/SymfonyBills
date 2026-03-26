@@ -37,6 +37,72 @@ class DlFoodLog
         return $this->getAmount().' ('.$unitTitle.')';
     }
 
+            
+    public function getAmountGrams(): float
+    {
+        $unitOfMeasure = $this->getFood()?->getUnitOfMeasure();
+        switch ($unitOfMeasure) {
+            case 'cups':
+                return (float) $this->getAmount() * 236.588;
+            case 'ounces':
+                return (float) $this->getAmount() * 28.3495;
+            case 'teaspon':
+                return (float) $this->getAmount() * 4.92892;
+            case 'tablespoons':
+                return (float) $this->getAmount() * 14.7868;
+            default:
+                return (float) $this->getAmount();
+        }
+    }
+
+    public function getFiberAmount(): float
+    {
+        return (float) $this->getAmount() * $this->getFood()?->getPercentFiber();
+    }
+
+    public function getSolubleFiberAmount(): float
+    {
+        return (float) $this->getAmount() * $this->getFood()?->getPercentFiber() *$this->getFood()?->getPercentSolubleFiber();
+    }
+
+    public function getFiberAmountGrams(): float
+    {
+        $unitOfMeasure = $this->getFood()?->getUnitOfMeasure()?->getTitle();
+        switch ($unitOfMeasure) {
+            case 'cups':
+                return (float) $this->getFiberAmount() * 236.588;
+            case 'ounces':
+                return (float) $this->getFiberAmount() * 28.3495;
+            case 'teaspon':
+                return (float) $this->getFiberAmount() * 4.92892;
+            case 'tablespoons':
+                return (float) $this->getFiberAmount() * 14.7868;
+            default:
+                return (float) $this->getFiberAmount();
+        }
+    }
+
+    public function getSolubleFiberAmountGrams(): float
+    {
+        $unitOfMeasure = $this->getFood()?->getUnitOfMeasure()?->getTitle();
+        switch ($unitOfMeasure) {
+            case 'cups':
+                return (float) $this->getSolubleFiberAmount() * 236.588;
+            case 'ounces':
+                return (float) $this->getSolubleFiberAmount() * 28.3495;
+            case 'teaspon':
+                return (float) $this->getSolubleFiberAmount() * 4.92892;
+            case 'tablespoons':
+                return (float) $this->getSolubleFiberAmount() * 14.7868;
+            default:
+                return (float) $this->getSolubleFiberAmount();
+        }
+    }
+
+
+
+    
+
     public function getId(): int
     {
         return $this->id;

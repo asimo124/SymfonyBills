@@ -49,6 +49,36 @@ class AeTitleMatch
     #[ORM\Column(type: 'integer', nullable: true, name: 'expenses_app_index')]
     private ?int $expensesAppIndex = null;
 
+    #[ORM\ManyToOne(targetEntity: AeRocketMoneyItem::class)]
+    #[ORM\JoinColumn(name: 'rocket_money_id', referencedColumnName: 'id', nullable: false, insertable: false, updatable: false)]
+    private ?AeRocketMoneyItem $rocketMoneyItem = null;
+
+    #[ORM\ManyToOne(targetEntity: VndBills::class)]
+    #[ORM\JoinColumn(name: 'expenses_app_id', referencedColumnName: 'vnd_id', nullable: false, insertable: false, updatable: false)]
+    private ?VndBills $expensesApp = null;
+
+    public function getExpensesApp(): ?VndBills
+    {
+        return $this->expensesApp;
+    }
+
+    public function setExpensesApp(?VndBills $expensesApp): static
+    {
+        $this->expensesApp = $expensesApp;
+        return $this;
+    }
+
+    public function getRocketMoneyItem(): ?AeRocketMoneyItem
+    {
+        return $this->rocketMoneyItem;
+    }
+
+    public function setRocketMoneyItem(?AeRocketMoneyItem $rocketMoneyItem): static
+    {
+        $this->rocketMoneyItem = $rocketMoneyItem;
+        return $this;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -205,4 +235,37 @@ class AeTitleMatch
         return $this;
     }
 
+    public function getAmountDiff(): float
+    {
+        return abs($this->rocketMoneyAmount - $this->expensesAppAmount);
+    }
+
+    public function getDateDiff(): int
+    {
+        return abs($this->rocketMoneyDate - $this->expensesAppDate);
+    }
+
+    public function getRocketMoneyTitleShort(): string
+    {
+        return substr($this->rocketMoneyTitle, 0, 21);
+    }
+
+    public function getExpensesAppTitleShort(): string
+    {
+        return substr($this->expensesAppTitle, 0, 21);
+    }
+
+    public function getRocketMoneyAmountFormatted(): string
+    {
+        return number_format($this->rocketMoneyAmount, 2);
+    }
+
+    public function getExpensesAppAmountFormatted(): string
+    {
+        return number_format($this->expensesAppAmount, 2);
+    }
+
+    public function isDiscrepancy(): bool {
+        return $this->getAmountDiff() > 2 || $this->getDateDiff() > 4;
+    }
 }

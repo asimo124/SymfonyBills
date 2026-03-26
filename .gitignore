@@ -15,4 +15,6 @@
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
 
+/symfony_bills_site.code-workspace
+
 /clear.sh
